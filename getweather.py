@@ -8,13 +8,16 @@ import urllib2
 
 # Constants
 json_weather = 'http://api.openweathermap.org/data/2.5/weather?q='
-city = 'okotoks,ca'
-home = '/home/you'
+city = 'calgary,ca'
+home = ''
 weather_file = '.bashweather'
 
 def get_data(site):
-    site_data = urllib2.urlopen(site)
-    return site_data
+    try:
+        site_data = urllib2.urlopen(site)
+        return site_data
+    except:
+        exit() # using a try catch should we get retrival errors
 
 def get_json_data(raw_json, item_name):
     formatted_json = json.load(raw_json)
@@ -33,7 +36,7 @@ def write_config(write_item, config_location):
 if __name__ == "__main__":
     raw_weather = get_data(json_weather + city)
     main_section = get_json_data(raw_weather, 'weather')
-    raw_weather = get_data(json_weather + city)
+    raw_weather = get_data(json_weather + city + )
     other_section = get_json_data(raw_weather, 'main')
-    weather_data = str(main_section[0]['main']) + " " + str(round(float(other_section['temp']) - 272.15, 1)) + "C"
+    weather_data = str(main_section[0]['main']) + " " + str(round(float(other_section['temp']) - 273.15, 1)) + "C"
     write_config(weather_data, home)
